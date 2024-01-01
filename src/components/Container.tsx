@@ -6,10 +6,10 @@ import Item from "./Item";
 
 const Container = () => {
   const initialItems = {
-    container1: ["A", "B", "C"],
-    container2: ["D", "E", "F"],
-    container3: ["G", "H", "I"],
-    container4: ["J", "K", "L"],
+    第1の習慣: ["A", "B", "C"],
+    第2の習慣: ["D", "E", "F"],
+    第3の習慣: ["G", "H", "I"],
+    第4の習慣: ["J", "K", "L"],
   };
 
   const { items, activeId, sensors, handleDragStart, handleDragOver, handleDragEnd } =
