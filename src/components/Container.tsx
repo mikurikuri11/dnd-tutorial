@@ -6,10 +6,10 @@ import Item from "./Item";
 
 const Container = () => {
   const initialItems = {
-    第1の習慣: ["A", "B", "C"],
-    第2の習慣: ["D", "E", "F"],
-    第3の習慣: ["G", "H", "I"],
-    第4の習慣: ["J", "K", "L"],
+    第1の習慣: ["緊急の会議", "予期せぬ出来事"],
+    第2の習慣: ["サウナ", "ジム", "読書"],
+    第3の習慣: ["不要な会話", "電話"],
+    第4の習慣: ["テレビ", "インターネット", "YouTube"],
   };
 
   const { items, activeId, sensors, handleDragStart, handleDragOver, handleDragEnd } =
