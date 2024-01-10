@@ -15,7 +15,7 @@ const config: Config = {
       },
       colors: {
         'mainBackgroundColor': '#0D1117',
-        'columBackgroundColor': '#161C22'
+        'columnBackgroundColor': '#161C22'
       }
     },
   },
