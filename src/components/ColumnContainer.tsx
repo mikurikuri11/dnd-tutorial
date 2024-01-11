@@ -2,14 +2,18 @@ import { Column, Id } from "@/types";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { CSS } from "@dnd-kit/utilities";
 import { useSortable } from "@dnd-kit/sortable";
+import { useState } from "react";
 
 interface Props {
   column: Column;
   deleteColumn: (id: Id) => void;
+  updateColumn: (id: Id, title: string) => void;
 }
 
 function ColumnContainer(props: Props) {
-  const { column, deleteColumn } = props;
+  const { column, deleteColumn, updateColumn } = props;
+
+  const [editMode, setEditMode] = useState(false);
 
   const {
     setNodeRef,
@@ -24,7 +28,8 @@ function ColumnContainer(props: Props) {
       data: {
         type: "Column",
         column
-      }
+      },
+      disabled: editMode
     });
 
     const style = {
@@ -71,6 +76,7 @@ function ColumnContainer(props: Props) {
       <div
         {...attributes}
         {...listeners}
+        onClick={() => setEditMode(true)}
         className="
         bg-mainBackgroundColor
         text-md
@@ -87,7 +93,28 @@ function ColumnContainer(props: Props) {
           <div className="flex justify-center items-center bg-columnBackgroundColor px-2 text-sm rounded-full">
             0
           </div>
-          <div className="flex-grow">{column.title}</div>
+          <div className="flex-grow">
+            {!editMode && column.title}
+            {editMode && (
+              <input
+                autoFocus
+                // onKeyDown={(e) => {
+                //   if (e.key !== "Enter") {
+                //     setEditMode(false);
+                //   }
+                // }}
+                onBlur={() =>
+                  setEditMode(false)
+                }
+                onChange={(e) => {
+                  updateColumn(column.id, e.target.value);
+                }}
+                className="bg-mainBackgroundColor text-md font-bold"
+                type="text"
+                value={column.title}
+              />
+            )}
+          </div>
           <button
             onClick={() => deleteColumn(column.id)}
             className="
