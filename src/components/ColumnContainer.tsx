@@ -1,5 +1,7 @@
 import { Column, Id } from "@/types";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable";
 
 interface Props {
   column: Column;
@@ -8,8 +10,26 @@ interface Props {
 
 function ColumnContainer(props: Props) {
   const { column, deleteColumn } = props;
+
+  const { setNodeRef, attributes, listeners, transform, transition }
+  =
+    useSortable({
+      id: column.id,
+      data: {
+        type: "column",
+        column
+      }
+    });
+
+    const style = {
+      transition,
+      transform: CSS.Transform.toString(transform),
+    };
+
   return (
     <div
+    ref={setNodeRef}
+    style={style}
       className="
       bg-columnBackgroundColor
       w-[350px]
@@ -22,6 +42,8 @@ function ColumnContainer(props: Props) {
     >
       {/* Column title */}
       <div
+        {...attributes}
+        {...listeners}
         className="
         bg-mainBackgroundColor
         text-md

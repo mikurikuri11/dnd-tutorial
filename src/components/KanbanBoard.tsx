@@ -1,10 +1,14 @@
 import { FaPlusCircle } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Column, Id } from "@/types";
 import ColumnContainer from "./ColumnContainer";
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext } from "@dnd-kit/sortable";
 
 function KanbanBoard() {
   const [columns, setColumns] = useState<Column[]>([]);
+  const columsId = useMemo(() => columns.map((col) => col.id),
+  [columns]);
 
   return (
     <div
@@ -19,33 +23,37 @@ function KanbanBoard() {
       px-[40px]
     "
     >
-      <div className="m-auto flex gap-4">
-        <div className="flex gap-4">
-          {columns.map((col) => (
-            <ColumnContainer key={col.id} column={col} deleteColumn={deleteColumn} />
-          ))}
+      <DndContext>
+        <div className="m-auto flex gap-4">
+          <div className="flex gap-4">
+            <SortableContext items={columsId}>
+              {columns.map((col) => (
+                <ColumnContainer key={col.id} column={col} deleteColumn={deleteColumn} />
+              ))}
+            </SortableContext>
+          </div>
+          <button
+            onClick={() => createNewColumn()}
+            className="
+            h-[60px]
+            w-[350px]
+            cursor-pointer
+            rounded-lg
+            bg-mainBackgroundColor
+            border-2
+            border-columBackgroundColor
+            p-4
+            ring-rose-500
+            hover:ring-2
+            flex
+            gap-3
+          "
+          >
+            <FaPlusCircle className="mt-1" />
+            Add Column
+          </button>
         </div>
-        <button
-          onClick={() => createNewColumn()}
-          className="
-          h-[60px]
-          w-[350px]
-          cursor-pointer
-          rounded-lg
-          bg-mainBackgroundColor
-          border-2
-          border-columBackgroundColor
-          p-4
-          ring-rose-500
-          hover:ring-2
-          flex
-          gap-3
-        "
-        >
-          <FaPlusCircle className="mt-1" />
-          Add Column
-        </button>
-      </div>
+      </DndContext>
     </div>
   );
 
