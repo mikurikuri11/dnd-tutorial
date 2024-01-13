@@ -1,6 +1,8 @@
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Id, Task } from "../types";
 import { useState } from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface Props {
   task: Task;
@@ -14,6 +16,27 @@ function TaskCard(props: Props) {
   const [mouseIsOver, setMouseIsOver] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
+  const {
+    setNodeRef,
+    attributes,
+    listeners,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: task.id,
+    data: {
+      type: "Task",
+      task,
+    },
+    disabled: editMode,
+  });
+
+  const style = {
+    transition,
+    transform: CSS.Transform.toString(transform),
+  };
+
   const toggleEditMode = () => {
     setEditMode(!editMode);
     setMouseIsOver(false);
@@ -22,6 +45,10 @@ function TaskCard(props: Props) {
   if (editMode) {
     return (
       <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
         className="
         bg-mainBackgroundColor
         p-2.5
@@ -63,8 +90,38 @@ function TaskCard(props: Props) {
     );
   }
 
+  if (isDragging) {
+    return (
+      <div
+        ref={setNodeRef}
+        style={style}
+        {...attributes}
+        {...listeners}
+        className="
+        opacity-50
+        bg-mainBackgroundColor
+        p-2.5
+        h-[100px]
+        min-h-[100px]
+        items-center
+        flex
+        text-left
+        rounded-xl
+        border-2
+        border-rose-500
+        cursor-grab
+      "
+      >
+      </div>
+    );
+  }
+
   return (
     <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
       onClick={toggleEditMode}
       onMouseEnter={() => setMouseIsOver(true)}
       onMouseLeave={() => setMouseIsOver(false)}
